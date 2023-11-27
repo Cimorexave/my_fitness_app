@@ -12,13 +12,18 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         body: Scaffold(
-          appBar: AppBar(),
+          appBar: AppBar(
+            backgroundColor: Colors.lightGreen[200],
+            title: const Text('my fitness app'),
+          ),
           body: const Center(
             child: Text("Center"),
           ),
           floatingActionButton: FloatingActionButton(
+            backgroundColor: Colors.lightGreen[200],
+            focusColor: Colors.lightGreen[100],
+            onPressed: () => print('pressed fab.'),
             child: const Icon(Icons.add),
-            onPressed: () => {print('pressed fab.')},
           ),
         ),
       ),
