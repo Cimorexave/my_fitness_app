@@ -22,11 +22,31 @@ class MainApp extends StatelessWidget {
           floatingActionButton: FloatingActionButton(
             backgroundColor: Colors.lightGreen[200],
             focusColor: Colors.lightGreen[100],
-            onPressed: () => print('pressed fab.'),
+            onPressed: () => {
+              showDialog(
+                  context: context,
+                  builder: (context) => const AddRecordWidget())
+            },
             child: const Icon(Icons.add),
           ),
         ),
       ),
+    );
+  }
+}
+
+class AddRecordWidget extends StatefulWidget {
+  const AddRecordWidget({super.key});
+
+  @override
+  State<AddRecordWidget> createState() => _AddRecordWidgetState();
+}
+
+class _AddRecordWidgetState extends State<AddRecordWidget> {
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Text('Center Dialog'),
     );
   }
 }
