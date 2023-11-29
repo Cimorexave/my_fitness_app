@@ -19,7 +19,7 @@ class HomePage extends StatelessWidget {
         onPressed: () => {
           showDialog(
             context: context,
-            builder: (context) => const AddRecordStatelessDialog(),
+            builder: (context) => AddRecordStatelessDialog(),
           )
         },
         child: const Icon(Icons.add),
@@ -29,10 +29,18 @@ class HomePage extends StatelessWidget {
 }
 
 class AddRecordStatelessDialog extends StatelessWidget {
-  const AddRecordStatelessDialog({super.key});
+  AddRecordStatelessDialog({super.key});
+
+  final formKey = GlobalKey<FormState>();
+  // TextEditingController titleFieldController = TextEditingController();
+  // TextEditingController caloriesFieldController = TextEditingController();
+  // TextEditingController descriptionFieldController = TextEditingController();
 
   void submitForm() {
     print('Submitting Form');
+    if (formKey.currentState!.validate()) {
+      formKey.currentState!.save();
+    }
   }
 
   @override
@@ -43,7 +51,7 @@ class AddRecordStatelessDialog extends StatelessWidget {
       content: SizedBox(
         width: MediaQuery.of(context).size.width * 0.8,
         height: MediaQuery.of(context).size.height * 0.5,
-        child: const AddRecordForm(),
+        child: AddRecordForm(formKey: formKey),
       ),
       actions: [
         ElevatedButton(
@@ -59,20 +67,15 @@ class AddRecordStatelessDialog extends StatelessWidget {
   }
 }
 
-class AddRecordForm extends StatefulWidget {
-  const AddRecordForm({super.key});
+class AddRecordForm extends StatelessWidget {
+  final GlobalKey<FormState> formKey;
 
-  @override
-  State<AddRecordForm> createState() => _AddRecordFormState();
-}
-
-class _AddRecordFormState extends State<AddRecordForm> {
-  final _formKey = GlobalKey<FormState>();
+  const AddRecordForm({super.key, required this.formKey});
 
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: _formKey,
+      key: formKey,
       child: Column(
         children: [
           TextFormField(
@@ -91,7 +94,7 @@ class _AddRecordFormState extends State<AddRecordForm> {
               if (value == null || value.isEmpty) {
                 return "Value can't be empty.";
               }
-              if (int.tryParse(value) is int) {
+              if (int.tryParse(value) is! int) {
                 return "Value must be a number.";
               }
               return null;
