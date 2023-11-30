@@ -32,14 +32,15 @@ class AddRecordStatelessDialog extends StatelessWidget {
   AddRecordStatelessDialog({super.key});
 
   final formKey = GlobalKey<FormState>();
-  // TextEditingController titleFieldController = TextEditingController();
-  // TextEditingController caloriesFieldController = TextEditingController();
-  // TextEditingController descriptionFieldController = TextEditingController();
+  TextEditingController titleFieldController = TextEditingController();
+  TextEditingController caloriesFieldController = TextEditingController();
+  TextEditingController descriptionFieldController = TextEditingController();
 
   void submitForm() {
-    print('Submitting Form');
     if (formKey.currentState!.validate()) {
-      formKey.currentState!.save();
+      // formKey.currentState!.save();
+      print(
+          'title: ${titleFieldController.text}\ncalories: ${caloriesFieldController.text}\ndescription: ${descriptionFieldController.text}');
     }
   }
 
@@ -51,7 +52,12 @@ class AddRecordStatelessDialog extends StatelessWidget {
       content: SizedBox(
         width: MediaQuery.of(context).size.width * 0.8,
         height: MediaQuery.of(context).size.height * 0.5,
-        child: AddRecordForm(formKey: formKey),
+        child: AddRecordForm(
+          formKey: formKey,
+          titleFieldController: titleFieldController,
+          caloriesFieldController: caloriesFieldController,
+          descriptionFieldController: descriptionFieldController,
+        ),
       ),
       actions: [
         ElevatedButton(
@@ -69,10 +75,20 @@ class AddRecordStatelessDialog extends StatelessWidget {
 
 class AddRecordForm extends StatelessWidget {
   final GlobalKey<FormState> formKey;
+  final TextEditingController titleFieldController;
+  final TextEditingController caloriesFieldController;
+  final TextEditingController descriptionFieldController;
 
-  const AddRecordForm({super.key, required this.formKey});
+  const AddRecordForm(
+      {super.key,
+      required this.formKey,
+      required this.titleFieldController,
+      required this.caloriesFieldController,
+      required this.descriptionFieldController});
 
-  void submitField(String key, String value) {}
+  void submitField(String key, String value) {
+    print('submitted field with key');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +104,8 @@ class AddRecordForm extends StatelessWidget {
               }
               return null;
             },
-            onSaved: (value) => submitField('title', value!),
+            // onSaved: (value) => submitField('title', value!),
+            controller: titleFieldController,
           ),
           TextFormField(
             decoration: const InputDecoration(labelText: 'Calories:'),
@@ -101,7 +118,8 @@ class AddRecordForm extends StatelessWidget {
               }
               return null;
             },
-            onSaved: (value) => submitField('calories', value!),
+            // onSaved: (value) => submitField('calories', value!),
+            controller: caloriesFieldController,
           ),
           TextFormField(
             decoration:
@@ -109,7 +127,8 @@ class AddRecordForm extends StatelessWidget {
             validator: (value) {
               return null;
             },
-            onSaved: (value) => submitField('description', value!),
+            // onSaved: (value) => submitField('description', value!),
+            controller: descriptionFieldController,
           ),
         ],
       ),
