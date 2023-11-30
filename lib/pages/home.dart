@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:my_fitness_app/model/record.dart';
 
 class HomePage extends StatelessWidget {
@@ -184,15 +185,21 @@ class RecordsList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        itemCount: recordsBox.length,
-        itemBuilder: (context, index) {
-          final Record record = recordsBox.getAt(index) as Record;
-          return ListTile(
-              title: Text(record.title),
-              subtitle: Text(
-                  '${record.description ?? "No Description"} - ${record.calories} calories'),
-              trailing: Text('${record.dateOfEntry.toLocal()}'));
+    return ValueListenableBuilder(
+        valueListenable: recordsBox.listenable(),
+        builder: (context, Box<Record> recordsBox, _) {
+          return ListView.builder(
+              itemCount: recordsBox.length,
+              itemBuilder: (context, index) {
+                final Record record = recordsBox.getAt(index) as Record;
+                return ListTile(
+                  title: Text(record.title),
+                  subtitle: Text(
+                      '${record.description ?? "No Description"} - ${record.calories} calories'),
+                  trailing: Text('${record.dateOfEntry.toLocal()}'),
+                  tileColor: Colors.green[50],
+                );
+              });
         });
   }
 }
