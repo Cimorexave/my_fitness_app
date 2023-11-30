@@ -32,9 +32,10 @@ class AddRecordStatelessDialog extends StatelessWidget {
   AddRecordStatelessDialog({super.key});
 
   final formKey = GlobalKey<FormState>();
-  TextEditingController titleFieldController = TextEditingController();
-  TextEditingController caloriesFieldController = TextEditingController();
-  TextEditingController descriptionFieldController = TextEditingController();
+  final TextEditingController titleFieldController = TextEditingController();
+  final TextEditingController caloriesFieldController = TextEditingController();
+  final TextEditingController descriptionFieldController =
+      TextEditingController();
 
   void submitForm() {
     if (formKey.currentState!.validate()) {
