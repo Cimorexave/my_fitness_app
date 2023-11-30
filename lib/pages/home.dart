@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:my_fitness_app/model/record.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatelessWidget {
@@ -38,33 +40,48 @@ class AddRecordStatelessDialog extends StatelessWidget {
   final TextEditingController descriptionFieldController =
       TextEditingController();
 
-  Future<bool> saveRecord(
-      String title, String calories, String description) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    // date => values
-    DateTime dateTime = DateTime.now();
-    print(dateTime.toUtc().toIso8601String());
-    return await prefs.setString(
-        dateTime.toUtc().toIso8601String(), '$title;$calories;$description');
+  void addRecord(Record newRecord) async {
+    Box<Record> recordsBox = Hive.box<Record>('recordsBox');
+    await recordsBox.add(newRecord);
   }
 
-  void submitForm(BuildContext context) async {
+  // Future<bool> saveRecord(
+  //     String title, String calories, String description) async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+
+  //   // date => values
+  //   DateTime dateTime = DateTime.now();
+  //   print(dateTime.toUtc().toIso8601String());
+  //   return await prefs.setString(
+  //       dateTime.toUtc().toIso8601String(), '$title;$calories;$description');
+  // }
+
+  void submitForm(BuildContext context) {
     if (formKey.currentState!.validate()) {
       // formKey.currentState!.save();
       print(
           'title: ${titleFieldController.text}\ncalories: ${caloriesFieldController.text}\ndescription: ${descriptionFieldController.text}');
       Navigator.of(context).pop();
 
-      bool saveResult = await saveRecord(titleFieldController.text,
-          caloriesFieldController.text, descriptionFieldController.text);
+      // bool saveResult = await saveRecord(titleFieldController.text,
+      //     caloriesFieldController.text, descriptionFieldController.text);
+      // if (saveResult) {
+      //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      //     content: Text('Successfully Added Record.'),
+      //     backgroundColor: Colors.green,
+      //   ));
+      // }
 
-      if (saveResult) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Successfully Added Record.'),
-          backgroundColor: Colors.green,
-        ));
-      }
+      addRecord(Record(
+          title: titleFieldController.text,
+          dateOfEntry: DateTime.now(),
+          calories: int.parse(caloriesFieldController.text),
+          description: descriptionFieldController.text));
+
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Successfully Added Record.'),
+        backgroundColor: Colors.green,
+      ));
     }
   }
 
