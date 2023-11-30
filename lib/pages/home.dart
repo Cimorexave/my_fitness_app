@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -37,16 +38,33 @@ class AddRecordStatelessDialog extends StatelessWidget {
   final TextEditingController descriptionFieldController =
       TextEditingController();
 
-  void submitForm(BuildContext context) {
+  Future<bool> saveRecord(
+      String title, String calories, String description) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    // date => values
+    DateTime dateTime = DateTime.now();
+    print(dateTime.toUtc().toIso8601String());
+    return await prefs.setString(
+        dateTime.toUtc().toIso8601String(), '$title;$calories;$description');
+  }
+
+  void submitForm(BuildContext context) async {
     if (formKey.currentState!.validate()) {
       // formKey.currentState!.save();
       print(
           'title: ${titleFieldController.text}\ncalories: ${caloriesFieldController.text}\ndescription: ${descriptionFieldController.text}');
       Navigator.of(context).pop();
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('Successfully Added Record.'),
-        backgroundColor: Colors.green,
-      ));
+
+      bool saveResult = await saveRecord(titleFieldController.text,
+          caloriesFieldController.text, descriptionFieldController.text);
+
+      if (saveResult) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Successfully Added Record.'),
+          backgroundColor: Colors.green,
+        ));
+      }
     }
   }
 
