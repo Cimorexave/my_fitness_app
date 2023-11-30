@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:my_fitness_app/model/record.dart';
 import 'pages/home.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  Hive.initFlutter();
+  Hive.registerAdapter(RecordAdapter());
+  await Hive.openBox<Record>('recordsBox');
+
   runApp(const MainApp());
 }
 
