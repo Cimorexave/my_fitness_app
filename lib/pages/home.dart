@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:my_fitness_app/model/record.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -13,8 +12,9 @@ class HomePage extends StatelessWidget {
         backgroundColor: Colors.lightGreen[200],
         title: const Text('my fitness app'),
       ),
-      body: const Center(
-        child: Text("Center"),
+      body: Center(
+        // child: Text("Center"),
+        child: RecordsList(),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.lightGreen[200],
@@ -174,5 +174,25 @@ class AddRecordForm extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class RecordsList extends StatelessWidget {
+  RecordsList({super.key});
+
+  final recordsBox = Hive.box<Record>('recordsBox');
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+        itemCount: recordsBox.length,
+        itemBuilder: (context, index) {
+          final Record record = recordsBox.getAt(index) as Record;
+          return ListTile(
+              title: Text(record.title),
+              subtitle: Text(
+                  '${record.description ?? "No Description"} - ${record.calories} calories'),
+              trailing: Text('${record.dateOfEntry.toLocal()}'));
+        });
   }
 }
