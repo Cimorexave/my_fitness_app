@@ -72,6 +72,8 @@ class AddRecordForm extends StatelessWidget {
 
   const AddRecordForm({super.key, required this.formKey});
 
+  void submitField(String key, String value) {}
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -86,7 +88,7 @@ class AddRecordForm extends StatelessWidget {
               }
               return null;
             },
-            onSaved: (value) => print('title: $value'),
+            onSaved: (value) => submitField('title', value!),
           ),
           TextFormField(
             decoration: const InputDecoration(labelText: 'Calories:'),
@@ -99,7 +101,7 @@ class AddRecordForm extends StatelessWidget {
               }
               return null;
             },
-            onSaved: (value) => print('calories: $value'),
+            onSaved: (value) => submitField('calories', value!),
           ),
           TextFormField(
             decoration:
@@ -107,7 +109,7 @@ class AddRecordForm extends StatelessWidget {
             validator: (value) {
               return null;
             },
-            onSaved: (value) => print('description: $value'),
+            onSaved: (value) => submitField('description', value!),
           ),
         ],
       ),
