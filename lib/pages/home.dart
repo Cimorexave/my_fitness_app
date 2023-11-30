@@ -37,11 +37,16 @@ class AddRecordStatelessDialog extends StatelessWidget {
   final TextEditingController descriptionFieldController =
       TextEditingController();
 
-  void submitForm() {
+  void submitForm(BuildContext context) {
     if (formKey.currentState!.validate()) {
       // formKey.currentState!.save();
       print(
           'title: ${titleFieldController.text}\ncalories: ${caloriesFieldController.text}\ndescription: ${descriptionFieldController.text}');
+      Navigator.of(context).pop();
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('Successfully Added Record.'),
+        backgroundColor: Colors.green,
+      ));
     }
   }
 
@@ -66,7 +71,7 @@ class AddRecordStatelessDialog extends StatelessWidget {
             child: const Text('Cancel')),
         ElevatedButton(
             onPressed: () {
-              submitForm();
+              submitForm(context);
             },
             child: const Text('Add')),
       ],
