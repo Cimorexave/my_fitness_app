@@ -46,32 +46,12 @@ class AddRecordStatelessDialog extends StatelessWidget {
     await recordsBox.add(newRecord);
   }
 
-  // Future<bool> saveRecord(
-  //     String title, String calories, String description) async {
-  //   SharedPreferences prefs = await SharedPreferences.getInstance();
-
-  //   // date => values
-  //   DateTime dateTime = DateTime.now();
-  //   print(dateTime.toUtc().toIso8601String());
-  //   return await prefs.setString(
-  //       dateTime.toUtc().toIso8601String(), '$title;$calories;$description');
-  // }
-
   void submitForm(BuildContext context) {
     if (formKey.currentState!.validate()) {
       // formKey.currentState!.save();
       print(
           'title: ${titleFieldController.text}\ncalories: ${caloriesFieldController.text}\ndescription: ${descriptionFieldController.text}');
       Navigator.of(context).pop();
-
-      // bool saveResult = await saveRecord(titleFieldController.text,
-      //     caloriesFieldController.text, descriptionFieldController.text);
-      // if (saveResult) {
-      //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-      //     content: Text('Successfully Added Record.'),
-      //     backgroundColor: Colors.green,
-      //   ));
-      // }
 
       addRecord(Record(
           title: titleFieldController.text,
