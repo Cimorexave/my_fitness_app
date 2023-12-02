@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
+// import 'package:hive/hive.dart';
+// import 'package:intl/intl.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:my_fitness_app/model/record.dart';
+import 'package:my_fitness_app/utils/utils.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -15,7 +17,8 @@ class HomePage extends StatelessWidget {
       ),
       body: Center(
         // child: Text("Center"),
-        child: RecordsList(),
+        // child: RecordsList(),
+        child: CategorizedRecordsList(),
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.lightGreen[200],
@@ -180,6 +183,43 @@ class RecordsList extends StatelessWidget {
                       '${record.description ?? "No Description"} - ${record.calories} calories'),
                   trailing: Text('${record.dateOfEntry.toLocal()}'),
                   tileColor: Colors.green[50],
+                );
+              });
+        });
+  }
+}
+
+class CategorizedRecordsList extends StatelessWidget {
+  CategorizedRecordsList({super.key});
+
+  final recordsBox = Hive.box<Record>('recordsBox');
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder(
+        valueListenable: recordsBox.listenable(),
+        builder: (context, Box<Record> recordsBox, _) {
+          List<Record> allRecords = recordsBox.values.toList();
+          Map<DateTime, List<Record>> groupedRecords =
+              groupRecordsByDay(allRecords);
+          return ListView.builder(
+              itemCount: groupedRecords.keys.length,
+              itemBuilder: (context, index) {
+                DateTime date = groupedRecords.keys.elementAt(index);
+                List<Record> dayRecords = groupedRecords[date]!;
+
+                // final Record record = recordsBox.getAt(index) as Record;
+                return ExpansionTile(
+                  title: Text(formatDate(date)), // Formatting the date
+                  children: dayRecords
+                      .map((record) => ListTile(
+                            title: Text(record
+                                .title), // Replace 'title' with the relevant property of Record
+                            subtitle: Text(record.description ??
+                                ""), // Replace 'description' with the relevant property
+                            // Add any other relevant details or widgets here
+                          ))
+                      .toList(),
                 );
               });
         });
