@@ -171,6 +171,8 @@ class RecordsList extends StatelessWidget {
           return ListView.builder(
               itemCount: recordsBox.length,
               itemBuilder: (context, index) {
+                // List<Record> allRecords = recordsBox.values.toList();
+
                 final Record record = recordsBox.getAt(index) as Record;
                 return ListTile(
                   title: Text(record.title),
