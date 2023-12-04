@@ -37,10 +37,10 @@ String formatDate(DateTime date) {
 
   String formattedDate = DateFormat('yyyy/MM/dd, EEEE').format(date);
 
-  if (date.isAtSameMomentAs(today)) {
-    return 'Today, $formattedDate';
-  } else if (date.isAtSameMomentAs(yesterday)) {
-    return 'Yesterday, $formattedDate';
+  if (date.day == today.day) {
+    return '${DateFormat('yyyy/MM/dd').format(date)}, Today';
+  } else if (date.day == yesterday.day) {
+    return '${DateFormat('yyyy/MM/dd').format(date)}, Yesterday';
   } else {
     return formattedDate;
   }
