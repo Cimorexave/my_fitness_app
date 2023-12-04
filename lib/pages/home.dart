@@ -210,14 +210,30 @@ class CategorizedRecordsList extends StatelessWidget {
 
                 // final Record record = recordsBox.getAt(index) as Record;
                 return ExpansionTile(
-                  title: Text(formatDate(date)), // Formatting the date
+                  title: Text('''${formatDate(date)} '''
+                      '''(${calculateSumOfDayCalories(dayRecords).toString()})'''), // Formatting the date
+                  collapsedBackgroundColor: evaluateDayCalories(dayRecords),
                   children: dayRecords
-                      .map((record) => ListTile(
-                            title: Text(record
-                                .title), // Replace 'title' with the relevant property of Record
-                            subtitle: Text(record.description ??
-                                ""), // Replace 'description' with the relevant property
-                            // Add any other relevant details or widgets here
+                      .map((record) => Container(
+                            decoration: const BoxDecoration(
+                                border: Border(
+                                    bottom: BorderSide(
+                                        color: Colors.black, width: 0.0))),
+                            child: ListTile(
+                              tileColor: evaluateMealCalories(record.calories),
+                              contentPadding:
+                                  const EdgeInsets.only(left: 8.0, right: 8.0),
+                              visualDensity: VisualDensity.compact,
+                              title: Text(record
+                                  .title), // Replace 'title' with the relevant property of Record
+                              subtitle: Text(record.description ?? ""),
+                              trailing: Text(record.calories.toString(),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize:
+                                          14)), // Replace 'description' with the relevant property
+                              // Add any other relevant details or widgets here
+                            ),
                           ))
                       .toList(),
                 );
