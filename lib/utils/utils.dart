@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import "../model/record.dart";
 import 'package:intl/intl.dart';
 
@@ -44,4 +46,39 @@ String formatDate(DateTime date) {
   } else {
     return formattedDate;
   }
+}
+
+Color? evaluateMealCalories(int calories) {
+  if (calories < 0) {
+    return Colors.blue[100];
+  } else if (calories < 200 && calories > 0) {
+    return Colors.green[100];
+  } else if (calories > 200 && calories < 600) {
+    return Colors.yellow[100];
+  } else if (calories > 600) {
+    return Colors.red[100];
+  } else {
+    return Colors.black12;
+  }
+}
+
+Color? evaluateDayCalories(List<Record> dayRecords) {
+  int sum = calculateSumOfDayCalories(dayRecords);
+  if (sum <= 1500) {
+    return Colors.blue[50];
+  } else if (sum <= 2000 && sum >= 1500) {
+    return Colors.green[50];
+  } else if (sum <= 2500 && sum >= 2000) {
+    return Colors.yellow[50];
+  } else {
+    return Colors.red[50];
+  }
+}
+
+int calculateSumOfDayCalories(List<Record> dayRecords) {
+  int sum = 0;
+  for (var dayRecord in dayRecords) {
+    sum += dayRecord.calories;
+  }
+  return sum;
 }
