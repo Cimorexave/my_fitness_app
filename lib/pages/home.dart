@@ -52,8 +52,8 @@ class AddRecordStatelessDialog extends StatelessWidget {
   void submitForm(BuildContext context) {
     if (formKey.currentState!.validate()) {
       // formKey.currentState!.save();
-      print(
-          'title: ${titleFieldController.text}\ncalories: ${caloriesFieldController.text}\ndescription: ${descriptionFieldController.text}');
+      // print(
+      //     'title: ${titleFieldController.text}\ncalories: ${caloriesFieldController.text}\ndescription: ${descriptionFieldController.text}');
       Navigator.of(context).pop();
 
       addRecord(Record(
@@ -112,7 +112,7 @@ class AddRecordForm extends StatelessWidget {
       required this.descriptionFieldController});
 
   void submitField(String key, String value) {
-    print('submitted field with key');
+    // print('submitted field with key');
   }
 
   @override
@@ -232,6 +232,16 @@ class CategorizedRecordsList extends StatelessWidget {
                                       fontWeight: FontWeight.bold,
                                       fontSize:
                                           14)), // Replace 'description' with the relevant property
+                              onTap: () {
+                                // print('tapped items list: ${record.title}');
+                                showDialog(
+                                  context: context,
+                                  builder: (context) =>
+                                      EditRecordStatelessDialog(
+                                    editingRecord: record,
+                                  ),
+                                );
+                              },
                               // Add any other relevant details or widgets here
                             ),
                           ))
@@ -239,5 +249,73 @@ class CategorizedRecordsList extends StatelessWidget {
                 );
               });
         });
+  }
+}
+
+class EditRecordStatelessDialog extends StatefulWidget {
+  const EditRecordStatelessDialog({super.key, required this.editingRecord});
+
+  final Record editingRecord;
+
+  @override
+  State<EditRecordStatelessDialog> createState() =>
+      _EditRecordStatelessDialogState();
+}
+
+class _EditRecordStatelessDialogState extends State<EditRecordStatelessDialog> {
+  final formKey = GlobalKey<FormState>();
+
+  final TextEditingController titleFieldController = TextEditingController();
+
+  final TextEditingController caloriesFieldController = TextEditingController();
+
+  final TextEditingController descriptionFieldController =
+      TextEditingController();
+
+  void deleteRecord(Record targetRecord) {
+    Box<Record> recordsBox = Hive.box<Record>('recordsBox');
+    recordsBox.delete(targetRecord);
+  }
+
+  @override
+  void initState() {
+    titleFieldController.text = widget.editingRecord.title;
+    caloriesFieldController.text = widget.editingRecord.calories.toString();
+    descriptionFieldController.text = widget.editingRecord.description ?? "";
+    super.initState();
+  }
+
+  // void editRecord(BuildContext context, Record targetRecord) {
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      backgroundColor: Colors.green[50],
+      title: const Text('Add New Record'),
+      content: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.8,
+        height: MediaQuery.of(context).size.height * 0.5,
+        child: AddRecordForm(
+          formKey: formKey,
+          titleFieldController: titleFieldController,
+          caloriesFieldController: caloriesFieldController,
+          descriptionFieldController: descriptionFieldController,
+        ),
+      ),
+      actions: [
+        ElevatedButton(
+            onPressed: () => {Navigator.of(context).pop()},
+            child: const Text('Cancel')),
+        ElevatedButton(
+            onPressed: () {
+              // editRecord(context, editingRecord);
+            },
+            child: const Text('Save')),
+        ElevatedButton(
+            onPressed: () {
+              deleteRecord(widget.editingRecord);
+            },
+            child: const Text('Delete')),
+      ],
+    );
   }
 }
