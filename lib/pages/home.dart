@@ -285,7 +285,7 @@ class _EditRecordStatelessDialogState extends State<EditRecordStatelessDialog> {
     targetRecord.calories = int.parse(caloriesFieldController.text);
     targetRecord.description = descriptionFieldController.text;
 
-    targetRecord.save();
+    await targetRecord.save();
   }
 
   void deleteRecord(Record targetRecord) async {
@@ -314,11 +314,13 @@ class _EditRecordStatelessDialogState extends State<EditRecordStatelessDialog> {
         ElevatedButton(
             onPressed: () {
               updateRecord(widget.editingRecord);
+              Navigator.of(context).pop();
             },
             child: const Text('Save')),
         ElevatedButton(
             onPressed: () {
               deleteRecord(widget.editingRecord);
+              Navigator.of(context).pop();
             },
             child: const Text('Delete')),
       ],
