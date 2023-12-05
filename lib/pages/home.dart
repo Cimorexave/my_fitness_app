@@ -272,11 +272,6 @@ class _EditRecordStatelessDialogState extends State<EditRecordStatelessDialog> {
   final TextEditingController descriptionFieldController =
       TextEditingController();
 
-  void deleteRecord(Record targetRecord) {
-    Box<Record> recordsBox = Hive.box<Record>('recordsBox');
-    recordsBox.delete(targetRecord);
-  }
-
   @override
   void initState() {
     titleFieldController.text = widget.editingRecord.title;
@@ -285,7 +280,18 @@ class _EditRecordStatelessDialogState extends State<EditRecordStatelessDialog> {
     super.initState();
   }
 
-  // void editRecord(BuildContext context, Record targetRecord) {
+  void updateRecord(Record targetRecord) async {
+    targetRecord.title = titleFieldController.text;
+    targetRecord.calories = int.parse(caloriesFieldController.text);
+    targetRecord.description = descriptionFieldController.text;
+
+    targetRecord.save();
+  }
+
+  void deleteRecord(Record targetRecord) async {
+    await targetRecord.delete();
+  }
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -307,7 +313,7 @@ class _EditRecordStatelessDialogState extends State<EditRecordStatelessDialog> {
             child: const Text('Cancel')),
         ElevatedButton(
             onPressed: () {
-              // editRecord(context, editingRecord);
+              updateRecord(widget.editingRecord);
             },
             child: const Text('Save')),
         ElevatedButton(
