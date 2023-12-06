@@ -14,12 +14,18 @@ Future<bool> sendEmail({
     }),
   );
 
-  if (await canLaunchUrl(emailLaunchUri)) {
-    return await launchUrl(emailLaunchUri);
-  } else {
-    // throw 'Could not launch $emailLaunchUri';
-    return false;
-  }
+  // if (await canLaunchUrl(emailLaunchUri)) {
+  return await launchUrl(emailLaunchUri);
+  // } else {
+  // throw 'Could not launch $emailLaunchUri';
+  // return false;
+  // }
+}
+
+Future<bool> testMail() async {
+  return await launchUrl(
+      Uri.parse('mailto:sadeq.s502@gmail.com?subject=hello&body=Test'));
+  // mailto:sadeq.s502@gmail.com?subject=hello&body=Test
 }
 
 String? encodeQueryParameters(Map<String, String> params) {
