@@ -51,4 +51,28 @@ class Record extends HiveObject {
       this.description,
       required this.dateOfEntry,
       required this.calories});
+
+  // toJson and fromJson methods
+  // Convert a Record object into a map.
+
+  // Map<String, dynamic> toJson() {
+  //   return {
+  //     'title': title,
+  //     'description': description,
+  //     'dateOfEntry':
+  //         dateOfEntry.toIso8601String(), // Converting DateTime to String
+  //     'calories': calories,
+  //   };
+  // }
+
+  // Convert a map into a Record object.
+  // static Record fromJson(Map<String, dynamic> json) {
+  //   return Record(
+  //     title: json['title'] as String,
+  //     description: json['description'] as String?,
+  //     dateOfEntry:
+  //         DateTime.parse(json['dateOfEntry']), // Converting String to DateTime
+  //     calories: json['calories'] as int,
+  //   );
+  // }
 }
