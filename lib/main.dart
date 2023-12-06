@@ -1,13 +1,17 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:my_fitness_app/model/record.dart';
 import 'package:my_fitness_app/utils/mock.data.dart';
+import 'package:path_provider/path_provider.dart';
 import 'pages/home.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  Hive.initFlutter();
+  final Directory appDocumentDir = await getApplicationDocumentsDirectory();
+  Hive.init(appDocumentDir.path);
   Hive.registerAdapter(RecordAdapter());
   Box<Record> box = await Hive.openBox<Record>('recordsBox');
 
