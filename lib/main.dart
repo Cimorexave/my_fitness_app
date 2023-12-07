@@ -1,7 +1,7 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:my_fitness_app/model/profile.dart';
 import 'package:my_fitness_app/model/record.dart';
 import 'package:my_fitness_app/utils/mock.data.dart';
 import 'package:path_provider/path_provider.dart';
@@ -12,10 +12,14 @@ void main() async {
 
   final Directory appDocumentDir = await getApplicationDocumentsDirectory();
   Hive.init(appDocumentDir.path);
-  Hive.registerAdapter(RecordAdapter());
-  Box<Record> box = await Hive.openBox<Record>('recordsBox');
 
-  if (box.isEmpty) injectData(box);
+  Hive.registerAdapter(RecordAdapter());
+  Hive.registerAdapter(ProfileAdapter());
+
+  Box<Record> recordsBox = await Hive.openBox<Record>('recordsBox');
+  await Hive.openBox<Profile>('profileBox');
+
+  if (recordsBox.isEmpty) injectData(recordsBox);
 
   runApp(const MainApp());
 }
