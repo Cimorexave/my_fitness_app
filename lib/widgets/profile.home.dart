@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:my_fitness_app/model/profile.dart';
 import 'package:my_fitness_app/utils/calories.dart';
 
 class ProfileDialog extends StatefulWidget {
@@ -18,8 +20,46 @@ class ProfileDialog extends StatefulWidget {
 }
 
 class _ProfileDialogState extends State<ProfileDialog> {
-  void saveProfile() {
-    if (widget.formKey.currentState!.validate()) {}
+  void saveProfile() async {
+    if (widget.formKey.currentState!.validate()) {
+      Box<Profile> profileBox = Hive.box('profileBox');
+      Profile? existingUser = profileBox.get('user');
+      if (existingUser == null) {
+        await profileBox.put(
+            'user',
+            Profile(
+                name: widget.nameFieldController.text,
+                gender: widget.selectedGender,
+                age: int.parse(widget.ageFieldController.text),
+                height: double.parse(widget.heightFieldController.text),
+                weight: double.parse(widget.weightFieldController.text),
+                activityLevel: widget.selectedActivityLevel));
+      } else {
+        existingUser.name = widget.nameFieldController.text;
+        existingUser.age = int.parse(widget.ageFieldController.text);
+        existingUser.gender = widget.selectedGender;
+        existingUser.height = double.parse(widget.heightFieldController.text);
+        existingUser.weight = double.parse(widget.weightFieldController.text);
+        existingUser.activityLevel = widget.selectedActivityLevel;
+
+        existingUser.recalculate();
+        await existingUser.save();
+      }
+    }
+  }
+
+  @override
+  void initState() {
+    Profile? existingUser = Hive.box('profileBox').get('user');
+    if (existingUser != null) {
+      widget.nameFieldController.text = existingUser.name;
+      widget.ageFieldController.text = existingUser.age.toString();
+      widget.selectedGender = existingUser.gender;
+      widget.heightFieldController.text = existingUser.height.toString();
+      widget.weightFieldController.text = existingUser.weight.toString();
+      widget.selectedActivityLevel = existingUser.activityLevel;
+    }
+    super.initState();
   }
 
   @override
@@ -144,24 +184,10 @@ class _ProfileDialogState extends State<ProfileDialog> {
         ElevatedButton(
             onPressed: () {
               saveProfile();
-              // Navigator.of(context).pop();
+              Navigator.of(context).pop();
             },
             child: const Text('Save')),
       ],
     );
-  }
-}
-
-class _ProfileFormState extends StatefulWidget {
-  const _ProfileFormState();
-
-  @override
-  State<_ProfileFormState> createState() => __ProfileFormStateState();
-}
-
-class __ProfileFormStateState extends State<_ProfileFormState> {
-  @override
-  Widget build(BuildContext context) {
-    return const Form(child: Column());
   }
 }
