@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:my_fitness_app/model/record.dart';
 import 'package:my_fitness_app/utils/utils.dart';
+import 'package:my_fitness_app/widgets/profile.home.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -14,6 +15,16 @@ class HomePage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.lightGreen[200],
         title: const Text('my fitness app'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.manage_accounts),
+            padding: const EdgeInsets.all(12.0),
+            onPressed: () {
+              showDialog(
+                  context: context, builder: (context) => ProfileDialog());
+            },
+          ),
+        ],
       ),
       body: Center(
         // child: Text("Center"),
