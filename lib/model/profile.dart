@@ -48,4 +48,12 @@ class Profile extends HiveObject {
           double dailyCalories, double kgToLosePerWeek) =>
       CalorieCalculator.calculateCaloriesForWeightLoss(
           dailyCalories, kgToLosePerWeek);
+
+  void recalculate() {
+    double calculatedBmr =
+        CalorieCalculator.calculateBMR(weight, height, age, gender);
+    bmr = calculatedBmr;
+    dailyCalories =
+        CalorieCalculator.calculateDailyCalories(calculatedBmr, activityLevel);
+  }
 }
