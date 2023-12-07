@@ -10,8 +10,13 @@ import 'pages/home.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final Directory appDocumentDir = await getApplicationDocumentsDirectory();
-  Hive.init(appDocumentDir.path);
+  // if (Platform.isAndroid || Platform.isIOS) {
+  //   final Directory appDocumentDir = await getApplicationDocumentsDirectory();
+  //   Hive.init(appDocumentDir.path);
+  // } else {
+  //   Hive.initFlutter();
+  // }
+  Hive.initFlutter();
 
   Hive.registerAdapter(RecordAdapter());
   Hive.registerAdapter(ProfileAdapter());
@@ -41,6 +46,7 @@ class _MainAppState extends State<MainApp> {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'my fittness app',
       home: HomePage(),
     );
