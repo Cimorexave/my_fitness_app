@@ -1,7 +1,8 @@
 // import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:my_fitness_app/utils/calories.dart';
 
-class Profile {
+class Profile extends HiveObject {
   String name;
   String gender;
   double weight;
