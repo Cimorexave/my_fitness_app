@@ -296,10 +296,19 @@ class _EditRecordStatelessDialogState extends State<EditRecordStatelessDialog> {
     targetRecord.calories = int.parse(caloriesFieldController.text);
     targetRecord.description = descriptionFieldController.text;
 
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text('Successfully Updated Record.'),
+      backgroundColor: Colors.green,
+    ));
     await targetRecord.save();
   }
 
   void deleteRecord(Record targetRecord) async {
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text('Successfully Deleted Record.'),
+      backgroundColor: Colors.green,
+    ));
+
     await targetRecord.delete();
   }
 

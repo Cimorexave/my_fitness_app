@@ -25,6 +25,10 @@ class _ProfileDialogState extends State<ProfileDialog> {
       Box<Profile> profileBox = Hive.box('profileBox');
       Profile? existingUser = profileBox.get('user');
       if (existingUser == null) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Successfully Created User.'),
+          backgroundColor: Colors.green,
+        ));
         await profileBox.put(
             'user',
             Profile(
@@ -43,6 +47,10 @@ class _ProfileDialogState extends State<ProfileDialog> {
         existingUser.activityLevel = widget.selectedActivityLevel;
 
         existingUser.recalculate();
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Successfully Updated User.'),
+          backgroundColor: Colors.green,
+        ));
         await existingUser.save();
       }
     }
