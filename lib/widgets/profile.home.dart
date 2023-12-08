@@ -20,8 +20,9 @@ class ProfileDialog extends StatefulWidget {
 }
 
 class _ProfileDialogState extends State<ProfileDialog> {
-  void saveProfile() async {
-    if (widget.formKey.currentState!.validate()) {
+  Future<bool> saveProfile() async {
+    bool validationResult = widget.formKey.currentState!.validate();
+    if (validationResult) {
       Box<Profile> profileBox = Hive.box('profileBox');
       Profile? existingUser = profileBox.get('user');
       // print('''
@@ -62,6 +63,7 @@ class _ProfileDialogState extends State<ProfileDialog> {
         await existingUser.save();
       }
     }
+    return validationResult;
   }
 
   @override
@@ -199,9 +201,8 @@ class _ProfileDialogState extends State<ProfileDialog> {
             onPressed: () => {Navigator.of(context).pop()},
             child: const Text('Cancel')),
         ElevatedButton(
-            onPressed: () {
-              saveProfile();
-              Navigator.of(context).pop();
+            onPressed: () async {
+              if (await saveProfile()) Navigator.of(context).pop();
             },
             child: const Text('Save')),
       ],
