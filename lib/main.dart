@@ -48,7 +48,7 @@ class _MainAppState extends State<MainApp> {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'my fittness app',
+      title: 'Fattochino',
       home: HomePage(),
     );
   }
