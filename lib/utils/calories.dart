@@ -1,3 +1,5 @@
+import 'package:my_fitness_app/model/profile.dart';
+
 class CalorieCalculator {
   // Constants
   static const int caloriesPerKg = 7700;
@@ -45,9 +47,9 @@ class CalorieCalculator {
   }
 }
 
-class ActivityLevel {
-  String description;
-  double coefficient;
+// class ActivityLevel {
+//   String description;
+//   double coefficient;
 
-  ActivityLevel({required this.description, required this.coefficient});
-}
+//   ActivityLevel({required this.description, required this.coefficient});
+// }
