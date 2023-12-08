@@ -5,6 +5,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:my_fitness_app/model/profile.dart';
 import 'package:my_fitness_app/model/record.dart';
 import 'package:my_fitness_app/utils/utils.dart';
+import 'package:my_fitness_app/widgets/diagrams.home.dart';
 import 'package:my_fitness_app/widgets/profile.home.dart';
 
 class HomePage extends StatelessWidget {
@@ -34,6 +35,13 @@ class HomePage extends StatelessWidget {
         // child: Text("Center"),
         // child: RecordsList(),
         child: CategorizedRecordsList(),
+        // child: WeekBarChart(),
+        // child: EvaluateDayPerformance(),
+        // children: [
+        // const WeekBarChart(),
+        // EvaluateDayPerformance(),
+        //   CategorizedRecordsList()
+        // ],
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.lightGreen[200],
