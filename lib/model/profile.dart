@@ -4,6 +4,17 @@ import 'package:my_fitness_app/utils/calories.dart';
 
 part 'profile.g.dart';
 
+@HiveType(typeId: 2)
+class ActivityLevel extends HiveObject {
+  @HiveField(0)
+  String description;
+
+  @HiveField(1)
+  double coefficient;
+
+  ActivityLevel({required this.description, required this.coefficient});
+}
+
 @HiveType(typeId: 1)
 class Profile extends HiveObject {
   @HiveField(0)
