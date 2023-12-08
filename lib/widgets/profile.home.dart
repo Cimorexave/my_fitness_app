@@ -24,6 +24,14 @@ class _ProfileDialogState extends State<ProfileDialog> {
     if (widget.formKey.currentState!.validate()) {
       Box<Profile> profileBox = Hive.box('profileBox');
       Profile? existingUser = profileBox.get('user');
+      // print('''
+      //           name: ${widget.nameFieldController.text},
+      //           gender: ${widget.selectedGender},
+      //           age: ${int.parse(widget.ageFieldController.text)},
+      //           height: ${double.parse(widget.heightFieldController.text)},
+      //           weight: ${double.parse(widget.weightFieldController.text)},
+      //           activityLevel: ${widget.selectedActivityLevel.coefficient}: ${widget.selectedActivityLevel.description}
+      //           ''');
       if (existingUser == null) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           content: Text('Successfully Created User.'),
@@ -58,7 +66,8 @@ class _ProfileDialogState extends State<ProfileDialog> {
 
   @override
   void initState() {
-    Profile? existingUser = Hive.box('profileBox').get('user');
+    Box<Profile> profileBox = Hive.box('profileBox');
+    Profile? existingUser = profileBox.get('user');
     if (existingUser != null) {
       widget.nameFieldController.text = existingUser.name;
       widget.ageFieldController.text = existingUser.age.toString();
