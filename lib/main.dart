@@ -20,6 +20,7 @@ void main() async {
 
   Hive.registerAdapter(RecordAdapter());
   Hive.registerAdapter(ProfileAdapter());
+  Hive.registerAdapter(ActivityLevelAdapter());
 
   Box<Record> recordsBox = await Hive.openBox<Record>('recordsBox');
   await Hive.openBox<Profile>('profileBox');
