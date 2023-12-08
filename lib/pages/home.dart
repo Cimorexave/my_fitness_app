@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 // import 'package:hive/hive.dart';
 // import 'package:intl/intl.dart';
 import 'package:hive_flutter/adapters.dart';
+import 'package:my_fitness_app/model/profile.dart';
 import 'package:my_fitness_app/model/record.dart';
 import 'package:my_fitness_app/utils/utils.dart';
 import 'package:my_fitness_app/widgets/profile.home.dart';
@@ -11,10 +12,13 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Box<Profile> profileBox = Hive.box('profileBox');
+    Profile? userProfile = profileBox.get('user');
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.lightGreen[200],
-        title: const Text('my fitness app'),
+        title: Text(
+            userProfile != null ? 'Hey, ${userProfile.name}.' : 'Welcome!'),
         actions: [
           IconButton(
             icon: const Icon(Icons.manage_accounts),
