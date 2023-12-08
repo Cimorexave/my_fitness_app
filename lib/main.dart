@@ -10,13 +10,13 @@ import 'pages/home.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // if (Platform.isAndroid || Platform.isIOS) {
-  //   final Directory appDocumentDir = await getApplicationDocumentsDirectory();
-  //   Hive.init(appDocumentDir.path);
-  // } else {
-  //   Hive.initFlutter();
-  // }
-  Hive.initFlutter();
+  if (Platform.isAndroid || Platform.isIOS) {
+    final Directory appDocumentDir = await getApplicationDocumentsDirectory();
+    Hive.init(appDocumentDir.path);
+  } else {
+    Hive.initFlutter();
+  }
+  // Hive.initFlutter();
 
   Hive.registerAdapter(RecordAdapter());
   Hive.registerAdapter(ProfileAdapter());
